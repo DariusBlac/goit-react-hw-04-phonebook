@@ -1,36 +1,33 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import css from './Form.module.css';
 
-const INITIAL_STATE = {
-  name: '',
-  number: '',
-};
+export const FormCreateContact = ({ createContact }) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-export class FormCreateContact extends Component {
-  state = INITIAL_STATE;
-
-  handleChange = ({ target: { value, name } }) => {
-    this.setState({ [name]: value });
-    console.log(this.state);
+  const handleChange = ({ target: { value, name } }) => {
+    if (name === 'name') setName(value);
+    else setNumber(value);
   };
 
-  handleSubmit = event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    this.props.createContact(this.state);
-    this.setState(INITIAL_STATE);
+    createContact({ name, number });
+    setName('');
+    setNumber('');
   };
 
-  render() {
+  {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <div>
           <h3>Name</h3>
           <input
             className={css.input}
             type="text"
             name="name"
-            onChange={this.handleChange}
-            value={this.state.name}
+            onChange={handleChange}
+            value={name}
             pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
@@ -42,8 +39,8 @@ export class FormCreateContact extends Component {
             className={css.input}
             type="tel"
             name="number"
-            onChange={this.handleChange}
-            value={this.state.number}
+            onChange={handleChange}
+            value={number}
             pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
@@ -55,4 +52,4 @@ export class FormCreateContact extends Component {
       </form>
     );
   }
-}
+};
