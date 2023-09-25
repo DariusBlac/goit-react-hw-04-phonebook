@@ -6,9 +6,10 @@ import { Filter } from 'components/Filter/Filter';
 import css from './App.module.css';
 
 export const App = () => {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(
+    JSON.parse(localStorage.getItem('contacts') || [])
+  );
   const [filter, setFilter] = useState('');
-  const LOCAL_CONTACTS = localStorage.getItem('contacts');
 
   const createContact = body => {
     const isAlreadyExist = contacts.find(
@@ -21,15 +22,8 @@ export const App = () => {
   };
 
   useEffect(() => {
-    if (LOCAL_CONTACTS) {
-      setContacts(JSON.parse(LOCAL_CONTACTS));
-    }
-  }, [LOCAL_CONTACTS]);
-
-  useEffect(() => {
-    if (contacts.length === LOCAL_CONTACTS.length) return;
     localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts, LOCAL_CONTACTS]);
+  }, [contacts]);
 
   const handleDelete = id => {
     setContacts(prev => prev.filter(el => el.id !== id));
