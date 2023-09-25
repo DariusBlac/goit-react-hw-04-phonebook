@@ -24,12 +24,12 @@ export const App = () => {
     if (LOCAL_CONTACTS) {
       setContacts(JSON.parse(LOCAL_CONTACTS));
     }
-  }, []);
+  }, [LOCAL_CONTACTS]);
 
   useEffect(() => {
     if (contacts.length === LOCAL_CONTACTS.length) return;
     localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+  }, [contacts, LOCAL_CONTACTS]);
 
   const handleDelete = id => {
     setContacts(prev => prev.filter(el => el.id !== id));
